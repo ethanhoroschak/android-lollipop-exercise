@@ -1,11 +1,14 @@
 package com.codepath.android.lollipopexercise.activities;
 
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.codepath.android.lollipopexercise.R;
 import com.codepath.android.lollipopexercise.adapters.ContactsAdapter;
@@ -18,6 +21,7 @@ public class ContactsActivity extends AppCompatActivity {
     private RecyclerView rvContacts;
     private ContactsAdapter mAdapter;
     private List<Contact> contacts;
+    private View.OnClickListener onUndoClickListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +49,17 @@ public class ContactsActivity extends AppCompatActivity {
 
         // Bind adapter to list
         rvContacts.setAdapter(mAdapter);
+
+        // set up listener
+        // set up listener
+        onUndoClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                contacts.remove(0);
+                mAdapter.notifyItemRemoved(0);
+                rvContacts.scrollToPosition(0);
+            }
+        };
     }
 
     @Override
@@ -60,7 +75,16 @@ public class ContactsActivity extends AppCompatActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
+        contacts.add(0, Contact.getRandomContact(this));
+        mAdapter.notifyItemInserted(0);
+        rvContacts.scrollToPosition(0);
+        Snackbar.make(rvContacts, "Contact Added", Snackbar.LENGTH_LONG)
+                .setAction("UNDO", onUndoClickListener)
+                .setActionTextColor(ContextCompat.getColor(ContactsActivity.this, R.color.accent))
+                .show();
         return super.onOptionsItemSelected(item);
     }
+
+
+
 }

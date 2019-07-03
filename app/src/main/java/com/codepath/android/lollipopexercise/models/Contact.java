@@ -1,15 +1,18 @@
 package com.codepath.android.lollipopexercise.models;
 
-import com.codepath.android.lollipopexercise.R;
-
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
+
+import com.codepath.android.lollipopexercise.R;
+
+import org.parceler.Parcel;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+@Parcel
 // Container class to hold Contact information.
 public class Contact implements Serializable {
     private String mName;
@@ -20,6 +23,9 @@ public class Contact implements Serializable {
         mName = name;
         mThumbnailDrawable = thumbnailDrawable;
         mNumber = number;
+    }
+
+    public Contact() {
     }
 
     public String getName() {
